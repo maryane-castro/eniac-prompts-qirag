@@ -265,6 +265,31 @@ SCORE: <number between 0.0 and 1.0>
 Reasoning:
 ```
 
+### Prompt — Overall Accuracy (retrieval judge, same judge: GPT-OSS 120B)
+
+Used only for QI-RAG with Gemma 27B, over the top-ranked retrieved chunk (not
+the generated answer, and not measured for the baselines). Same judge model as
+GEval Correctness above, with a simpler, binary prompt:
+
+```
+You are a judge. Verify whether the retrieved chunk below contains the
+information present in the reference answer.
+
+Reference answer (ground truth): {reference_answer}
+
+Retrieved chunk: {chunk_text}
+
+Does the retrieved chunk contain the information present in the reference
+answer above? Respond with only one word:
+- "CORRECT" if the chunk contains the reference answer's information.
+- "INCORRECT" if it does not.
+
+Verdict:
+```
+
+Overall Accuracy is the proportion of queries for which the verdict was
+`CORRECT`, out of the total number of queries.
+
 ### Notes on the remaining generation metrics
 
 - **Answer Relevance**: typically computed via DeepEval's default template (decomposes the answer into statements and checks pertinence to the question via embeddings/LLM) — requires no custom prompt beyond the library's native template.
